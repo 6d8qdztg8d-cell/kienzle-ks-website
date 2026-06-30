@@ -314,110 +314,116 @@ function Services() {
   ]
 
   return (
-    <section ref={ref} className="py-28 bg-[#f5f5f7]" id="services">
-      <div className="max-w-6xl mx-auto px-6 lg:px-12">
+    <section ref={ref} className="bg-[#f5f5f7] overflow-hidden" id="services">
+      {/* Header */}
+      <div className="max-w-6xl mx-auto px-6 lg:px-12 pt-28 pb-14">
         <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }} className="mb-14">
+          transition={{ duration: 0.7 }}>
           <p className="text-xs font-semibold text-[#E31E24] uppercase tracking-widest mb-3">{t('services.label')}</p>
           <h2 className="font-display font-black text-4xl md:text-5xl text-[#1d1d1f] leading-tight max-w-xl">
             {t('services.headline')}<br />
             <span className="text-red-gradient">{t('services.headlineSub')}</span>
           </h2>
         </motion.div>
+      </div>
 
-        <div className="grid md:grid-cols-12 gap-6">
-          {/* Left: real modern photo + active service overlay */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="md:col-span-7 relative rounded-3xl overflow-hidden min-h-[480px]"
-          >
-            <img
-              src="/images/truck1.jpg"
-              alt="Kienzle KS technicians at work"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            <RotatingGear size={160} speed={14} className="absolute -top-8 -right-8 text-white/5" />
-            <RotatingGear size={80} speed={8} reverse className="absolute bottom-24 right-8 text-[#E31E24]/20" />
+      {/* Full-width split layout — image bleeds to left edge */}
+      <div className="flex flex-col md:flex-row">
+        {/* Left: full-bleed image, no card frame */}
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.9 }}
+          className="relative md:w-[58%] min-h-[480px] md:min-h-[580px] overflow-hidden"
+        >
+          <img
+            src="/images/truck1.jpg"
+            alt="Kienzle KS technicians at work"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+          {/* Right-edge fade into section background */}
+          <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-r from-transparent to-[#f5f5f7] hidden md:block" />
 
-            <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end">
-              <span className="inline-block text-xs font-semibold text-white bg-[#E31E24] px-3 py-1 rounded-full mb-4 self-start">
-                {String(active + 1).padStart(2, '0')} {t('services.counter')}
-              </span>
-              <AnimatePresence mode="wait">
-                <motion.div key={`${active}-${t('services.s1title')}`}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.35 }}
-                >
-                  <h3 className="font-display font-bold text-2xl md:text-3xl text-white mb-2">{t(cards[active].titleKey)}</h3>
-                  <p className="text-xs text-white/50 uppercase tracking-widest mb-3">{t(cards[active].subKey)}</p>
-                  <p className="text-white/70 text-sm leading-relaxed max-w-sm">{t(cards[active].descKey)}</p>
-                </motion.div>
-              </AnimatePresence>
-              <button
-                onClick={() => {
-                  setSelectedService(active)
-                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
-                }}
-                className="mt-6 inline-flex items-center gap-2 text-white text-sm font-semibold group self-start"
+          <RotatingGear size={180} speed={18} className="absolute -top-10 -left-10 text-white/4" />
+
+          <div className="absolute inset-0 px-10 md:px-12 pb-12 flex flex-col justify-end">
+            <span className="inline-block text-xs font-semibold text-white bg-[#E31E24] px-3 py-1 rounded-full mb-5 self-start tracking-wider">
+              {String(active + 1).padStart(2, '0')} {t('services.counter')}
+            </span>
+            <AnimatePresence mode="wait">
+              <motion.div key={`${active}-${t('services.s1title')}`}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.35 }}
               >
-                {t('services.bookCta')}
-                <motion.svg
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </motion.svg>
-              </button>
-            </div>
-          </motion.div>
+                <h3 className="font-display font-bold text-2xl md:text-3xl text-white mb-2">{t(cards[active].titleKey)}</h3>
+                <p className="text-xs text-white/50 uppercase tracking-widest mb-3">{t(cards[active].subKey)}</p>
+                <p className="text-white/70 text-sm leading-relaxed max-w-sm">{t(cards[active].descKey)}</p>
+              </motion.div>
+            </AnimatePresence>
+            <button
+              onClick={() => {
+                setSelectedService(active)
+                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="mt-6 inline-flex items-center gap-2 text-white text-sm font-semibold self-start"
+            >
+              {t('services.bookCta')}
+              <motion.svg
+                animate={{ x: [0, 4, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </motion.svg>
+            </button>
+          </div>
+        </motion.div>
 
-          {/* Right: Interactive service selector */}
-          <div className="md:col-span-5 flex flex-col gap-3 justify-center">
-            {cards.map((c, i) => (
-              <motion.button
-                key={i}
-                onClick={() => setActive(i)}
-                initial={{ opacity: 0, x: 30 }}
-                animate={inView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.15 + i * 0.1 }}
-                whileTap={{ scale: 0.97 }}
-                className={`w-full text-left rounded-2xl p-5 transition-all duration-300 flex items-center gap-4 ${
-                  active === i
-                    ? 'bg-[#E31E24] shadow-[0_8px_30px_rgba(227,30,36,0.35)]'
-                    : 'glass-card hover:shadow-md'
+        {/* Right: Interactive service cards */}
+        <div className="md:w-[42%] flex flex-col gap-3 justify-center px-8 lg:px-14 py-12">
+          {cards.map((c, i) => (
+            <motion.button
+              key={i}
+              onClick={() => setActive(i)}
+              initial={{ opacity: 0, x: 30 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.15 + i * 0.1 }}
+              whileTap={{ scale: 0.97 }}
+              className={`w-full text-left rounded-2xl p-5 transition-all duration-300 flex items-center gap-4 ${
+                active === i
+                  ? 'bg-[#E31E24] shadow-[0_8px_30px_rgba(227,30,36,0.35)]'
+                  : 'glass-card hover:shadow-md'
+              }`}
+            >
+              <motion.div
+                animate={{ rotate: active === i ? 360 : 0 }}
+                transition={{ duration: 0.5, ease: 'easeInOut' }}
+                className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors duration-300 ${
+                  active === i ? 'bg-white/20 text-white' : 'bg-[#E31E24]/10 text-[#E31E24]'
                 }`}
               >
-                <motion.div
-                  animate={{ rotate: active === i ? 360 : 0 }}
-                  transition={{ duration: 0.5, ease: 'easeInOut' }}
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors duration-300 ${
-                    active === i ? 'bg-white/20 text-white' : 'bg-[#E31E24]/10 text-[#E31E24]'
-                  }`}
-                >
-                  {serviceIcons[i]}
-                </motion.div>
-                <div className="min-w-0 flex-1">
-                  <p className={`font-bold text-sm ${active === i ? 'text-white' : 'text-[#1d1d1f]'}`}>{t(c.titleKey)}</p>
-                  <p className={`text-[10px] uppercase tracking-wider mt-0.5 ${active === i ? 'text-white/60' : 'text-[#a1a1a6]'}`}>{t(c.subKey)}</p>
-                </div>
-                <motion.svg
-                  animate={{ opacity: active === i ? 1 : 0, x: active === i ? 0 : -6 }}
-                  transition={{ duration: 0.25 }}
-                  className="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </motion.svg>
-              </motion.button>
-            ))}
-          </div>
+                {serviceIcons[i]}
+              </motion.div>
+              <div className="min-w-0 flex-1">
+                <p className={`font-bold text-sm ${active === i ? 'text-white' : 'text-[#1d1d1f]'}`}>{t(c.titleKey)}</p>
+                <p className={`text-[10px] uppercase tracking-wider mt-0.5 ${active === i ? 'text-white/60' : 'text-[#a1a1a6]'}`}>{t(c.subKey)}</p>
+              </div>
+              <motion.svg
+                animate={{ opacity: active === i ? 1 : 0, x: active === i ? 0 : -6 }}
+                transition={{ duration: 0.25 }}
+                className="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </motion.svg>
+            </motion.button>
+          ))}
         </div>
       </div>
+
+      <div className="pb-28" />
     </section>
   )
 }
@@ -431,99 +437,51 @@ function Showcase() {
   const featureKeys = ['showcase.feature1', 'showcase.feature2', 'showcase.feature3', 'showcase.feature4']
 
   return (
-    <section ref={ref} className="py-28 bg-white" id="tachographs">
-      <div className="max-w-6xl mx-auto px-6 lg:px-12 grid md:grid-cols-2 gap-16 items-center">
+    <section ref={ref} className="bg-white overflow-hidden" id="tachographs">
+      <div className="flex flex-col md:flex-row-reverse min-h-[620px]">
+
+        {/* Right: full-bleed image, bleeds to right edge */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={inView ? { opacity: 1, scale: 1 } : {}}
+          initial={{ opacity: 0, x: 40 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.9 }}
+          className="relative md:w-[52%] min-h-[420px] md:min-h-0 overflow-hidden"
         >
-          <Tilt3D className="relative" intensity={10}>
-            <div className="relative h-[460px] rounded-3xl overflow-hidden glass-card">
-              <img
-                src="/images/truck2.jpg"
-                alt="Modern truck cab interior"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+          <img
+            src="/images/truck2.jpg"
+            alt="Modern truck cab interior"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/40" />
+          {/* Left-edge fade into white section background */}
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-l from-transparent to-white hidden md:block" />
 
-              {/* Spinning precision rings */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <motion.svg
-                  className="absolute inset-0 w-full h-full"
-                  viewBox="0 0 400 460"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-                >
-                  <circle cx="200" cy="230" r="185" fill="none" stroke="#E31E24"
-                    strokeWidth="1" strokeDasharray="6 12" strokeOpacity="0.25" />
-                </motion.svg>
-                <motion.svg
-                  className="absolute inset-0 w-full h-full"
-                  viewBox="0 0 400 460"
-                  animate={{ rotate: -360 }}
-                  transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-                >
-                  <circle cx="200" cy="230" r="170" fill="none" stroke="#E31E24"
-                    strokeWidth="0.5" strokeDasharray="3 20" strokeOpacity="0.15" />
-                </motion.svg>
-              </div>
+          {/* Scan line — subtle, single */}
+          <motion.div
+            animate={{ y: ['-4px', '100%'] }}
+            transition={{ repeat: Infinity, duration: 6, ease: 'linear', repeatDelay: 4 }}
+            className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#E31E24]/50 to-transparent pointer-events-none"
+          />
 
-              {/* Scan line */}
-              <motion.div
-                animate={{ y: [-4, 464] }}
-                transition={{ repeat: Infinity, duration: 5, ease: 'linear', repeatDelay: 3 }}
-                className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#E31E24]/70 to-transparent z-10 pointer-events-none"
-              />
+          {/* Corner marks */}
+          {['top-5 left-5 border-t border-l', 'top-5 right-5 border-t border-r',
+            'bottom-5 left-5 border-b border-l', 'bottom-5 right-5 border-b border-r'].map((cls, i) => (
+            <div key={i} className={`absolute w-6 h-6 ${cls} border-[#E31E24]/50 pointer-events-none`} />
+          ))}
 
-              {['top-4 left-4 border-t border-l', 'top-4 right-4 border-t border-r',
-                'bottom-4 left-4 border-b border-l', 'bottom-4 right-4 border-b border-r'].map((cls, i) => (
-                <div key={i} className={`absolute w-8 h-8 ${cls} border-[#E31E24]/60 pointer-events-none`} />
-              ))}
-
-              <div className="absolute bottom-5 left-5 right-5">
-                <span className="text-[10px] text-white/60 uppercase tracking-widest font-semibold">
-                  {t('showcase.badge')}
-                </span>
-              </div>
+          {/* EU badge — integrated bottom-left */}
+          <div className="absolute bottom-6 left-6 flex items-center gap-2">
+            <div className="w-6 h-6 rounded-full bg-[#E31E24] flex items-center justify-center">
+              <svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
             </div>
-
-            {/* Floating badges */}
-            <FloatBadge delay={0} className="absolute -top-4 -right-4" style={{ translateZ: '40px' }}>
-              <div className="flex items-center gap-1.5">
-                <div className="w-5 h-5 rounded-full bg-[#E31E24]/10 flex items-center justify-center">
-                  <svg className="w-3 h-3 text-[#E31E24]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold text-[#E31E24] leading-none">EU Certified</p>
-                  <p className="text-[9px] text-[#6e6e73]">Standard</p>
-                </div>
-              </div>
-            </FloatBadge>
-
-            <FloatBadge delay={0.8} className="absolute top-1/3 -left-6" style={{ translateZ: '40px' }}>
-              <div className="flex items-center gap-1.5">
-                <RotatingGear size={16} speed={4} className="text-[#E31E24]" />
-                <div>
-                  <p className="text-[10px] font-bold text-[#1d1d1f] leading-none">± 0.1%</p>
-                  <p className="text-[9px] text-[#6e6e73]">Accuracy</p>
-                </div>
-              </div>
-            </FloatBadge>
-
-            <FloatBadge delay={1.6} className="absolute -bottom-4 right-8" style={{ translateZ: '40px' }}>
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                <p className="text-[10px] font-bold text-[#1d1d1f]">Since <span className="text-[#E31E24]">2001</span></p>
-              </div>
-            </FloatBadge>
-          </Tilt3D>
+            <span className="text-[10px] font-bold text-white uppercase tracking-widest">{t('showcase.badge')}</span>
+          </div>
         </motion.div>
 
-        {/* Text */}
-        <div>
+        {/* Left: Text content */}
+        <div className="md:w-[48%] flex flex-col justify-center px-8 lg:px-16 py-20">
           <motion.p initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
             className="text-xs font-semibold text-[#E31E24] uppercase tracking-widest mb-4">
@@ -566,7 +524,7 @@ function Showcase() {
             whileHover={{ scale: 1.03, boxShadow: '0 8px 24px rgba(227,30,36,0.3)' }}
             whileTap={{ scale: 0.97 }}
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="px-7 py-3 bg-[#E31E24] text-white text-sm font-semibold rounded-full shadow-sm hover:bg-[#ba0013] transition-all duration-200">
+            className="px-7 py-3 bg-[#E31E24] text-white text-sm font-semibold rounded-full shadow-sm hover:bg-[#ba0013] transition-all duration-200 self-start">
             {t('showcase.cta')}
           </motion.button>
         </div>
@@ -604,48 +562,46 @@ function About() {
   ]
 
   return (
-    <section ref={ref} className="py-28 bg-[#f5f5f7]" id="about">
-      {/* Banner — real analog tachograph instruments */}
+    <section ref={ref} className="bg-[#f5f5f7]" id="about">
+      {/* Full-bleed banner — no card, no rounded corners, true width */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8 }}
-        className="max-w-6xl mx-auto px-6 lg:px-12 mb-20"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 1 }}
+        className="relative h-[320px] md:h-[420px] overflow-hidden mb-20"
       >
-        <Tilt3D intensity={5} className="w-full">
-          <div className="relative h-[300px] md:h-[380px] rounded-3xl overflow-hidden">
-            <img
-              src="/images/truck3.jpg"
-              alt="Kienzle KS professional inspection center"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
-            <RotatingGear size={200} speed={20} className="absolute -bottom-12 -right-12 text-white/5" />
-            <RotatingGear size={80} speed={10} reverse className="absolute top-8 right-16 text-[#E31E24]/15" />
-            <motion.div
-              animate={{ x: ['-100%', '100%'] }}
-              transition={{ repeat: Infinity, duration: 6, ease: 'linear', repeatDelay: 2 }}
-              className="absolute top-0 bottom-0 w-32 bg-gradient-to-r from-transparent via-[#E31E24]/15 to-transparent pointer-events-none"
-            />
-            <div className="absolute bottom-6 left-8 right-8 flex items-end justify-between">
-              <div>
-                <p className="text-xs font-semibold text-white/50 uppercase tracking-widest mb-1">{t('about.bannerLabel')}</p>
-                <p className="text-2xl font-display font-bold text-white">{t('about.bannerTitle')}</p>
-              </div>
-              <FloatBadge delay={0.5} className="hidden md:flex">
-                <div className="flex items-center gap-2">
-                  <RotatingGear size={14} speed={5} className="text-[#E31E24]" />
-                  <span className="text-xs font-bold text-[#1d1d1f]">
-                    {t('about.specialistsBadge')}<br /><span className="text-[#E31E24]">{t('about.specialists')}</span>
-                  </span>
-                </div>
-              </FloatBadge>
+        <img
+          src="/images/truck3.jpg"
+          alt="Kienzle KS professional inspection center"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#f5f5f7]/60 via-transparent to-transparent" />
+
+        {/* Horizontal light sweep */}
+        <motion.div
+          animate={{ x: ['-100%', '120%'] }}
+          transition={{ repeat: Infinity, duration: 7, ease: 'linear', repeatDelay: 3 }}
+          className="absolute top-0 bottom-0 w-40 bg-gradient-to-r from-transparent via-white/8 to-transparent pointer-events-none"
+        />
+
+        <div className="absolute inset-0 flex items-end">
+          <div className="max-w-6xl mx-auto w-full px-6 lg:px-12 pb-10 flex items-end justify-between">
+            <div>
+              <p className="text-xs font-semibold text-white/50 uppercase tracking-widest mb-2">{t('about.bannerLabel')}</p>
+              <p className="text-3xl md:text-4xl font-display font-bold text-white">{t('about.bannerTitle')}</p>
+            </div>
+            <div className="hidden md:flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/15 px-4 py-2.5 rounded-xl">
+              <RotatingGear size={14} speed={5} className="text-[#E31E24]" />
+              <span className="text-xs font-semibold text-white">
+                {t('about.specialistsBadge')} <span className="text-[#E31E24]">{t('about.specialists')}</span>
+              </span>
             </div>
           </div>
-        </Tilt3D>
+        </div>
       </motion.div>
 
-      <div className="max-w-6xl mx-auto px-6 lg:px-12 grid md:grid-cols-2 gap-20 items-start">
+      <div className="max-w-6xl mx-auto px-6 lg:px-12 pb-28 grid md:grid-cols-2 gap-20 items-start">
         <div ref={gsapRef}>
           <div className="line">
             <p className="text-xs font-semibold text-[#E31E24] uppercase tracking-widest mb-4">{t('about.label')}</p>
