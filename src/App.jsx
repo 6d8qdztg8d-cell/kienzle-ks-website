@@ -1065,7 +1065,6 @@ function AppInner() {
       <Hero />
       <Stats />
       <Services />
-      <VideoScrollSection />
       <Showcase />
       <About />
       <BookingSection />
