@@ -10,6 +10,8 @@ import { LANGUAGES } from './i18n'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const TRUCK_VIDEO_URL = 'https://d8j0ntlcm91z4.cloudfront.net/user_30sUV5b152TMsFZrjKbpFvSbI3L/hf_20260630_192351_e2a3dea2-0c1f-455b-9b42-2f4f2ab8eb37.mp4'
+
 // ─── Rotating Gear ──────────────────────────────────────────────────────────
 function RotatingGear({ size = 64, speed = 12, className = '', reverse = false }) {
   return (
@@ -963,6 +965,98 @@ function Footer() {
   )
 }
 
+// ─── Video Scroll Section ────────────────────────────────────────────────────
+function VideoScrollSection() {
+  const { t } = useLanguage()
+  const videoRef = useRef()
+  const sectionRef = useRef()
+  const progressRef = useRef()
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    video.pause()
+    video.currentTime = 0
+
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top top',
+        end: '+=280%',
+        pin: true,
+        scrub: 1.2,
+        onUpdate: (self) => {
+          if (video.readyState >= 2 && video.duration) {
+            video.currentTime = self.progress * video.duration
+          }
+          if (progressRef.current) {
+            progressRef.current.style.width = `${self.progress * 100}%`
+          }
+        },
+      })
+    })
+
+    return () => ctx.revert()
+  }, [])
+
+  return (
+    <section ref={sectionRef} style={{ height: '380vh' }} id="video-scroll">
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-black">
+        {/* Video */}
+        <video
+          ref={videoRef}
+          src={TRUCK_VIDEO_URL}
+          className="absolute inset-0 w-full h-full object-cover"
+          muted
+          playsInline
+          preload="auto"
+          crossOrigin="anonymous"
+        />
+
+        {/* Gradients */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/40 pointer-events-none" />
+
+        {/* Top label */}
+        <div className="absolute top-0 inset-x-0 flex justify-center pt-10">
+          <div className="flex items-center gap-3">
+            <div className="h-px w-10 bg-[#E31E24]/50" />
+            <p className="text-[10px] font-bold text-white/50 uppercase tracking-[0.25em]">
+              Tachograph Precision Engineering
+            </p>
+            <div className="h-px w-10 bg-[#E31E24]/50" />
+          </div>
+        </div>
+
+        {/* Center badge — subtle */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="flex items-center gap-2 bg-black/20 backdrop-blur-sm border border-white/10 px-4 py-2 rounded-full">
+            <RotatingGear size={12} speed={6} className="text-[#E31E24]" />
+            <span className="text-[10px] font-semibold text-white/60 uppercase tracking-widest">
+              Kienzle KS · Seit 2001
+            </span>
+          </div>
+        </div>
+
+        {/* Bottom: scroll hint + progress bar */}
+        <div className="absolute bottom-0 inset-x-0 pb-8 flex flex-col items-center gap-4">
+          <p className="text-[9px] font-semibold text-white/30 uppercase tracking-[0.35em]">
+            Scroll to explore
+          </p>
+          {/* Progress bar */}
+          <div className="w-48 h-px bg-white/10 relative overflow-hidden">
+            <div
+              ref={progressRef}
+              className="absolute inset-y-0 left-0 bg-[#E31E24] transition-none"
+              style={{ width: '0%' }}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 // ─── Root App ─────────────────────────────────────────────────────────────────
 function AppInner() {
   return (
@@ -971,6 +1065,7 @@ function AppInner() {
       <Hero />
       <Stats />
       <Services />
+      <VideoScrollSection />
       <Showcase />
       <About />
       <BookingSection />
